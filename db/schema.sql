@@ -3,16 +3,29 @@ CREATE DATABASE employee_db;
 
 USE employee_db;
 
-CREATE TABLE movies(
+CREATE TABLE departments(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    movie_name VARCHAR(50) NOT NULL
+    department_name VARCHAR(30) NOT NULL
 );
 
-CREATE TABLE reviews(
+CREATE TABLE roles(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    movie_ID INT,
-    review TEXT NOT NULL,
-    FOREIGN KEY (movie_db)
-    REFERENCES movies(id)
+    title VARCHAR(30) NOT NULL,
+    salary DECIMAL NOT NULL,
+    department_id INT,
+    FOREIGN KEY (department_id)
+    REFERENCES departments(id)
     ON DELETE SET NULL
 );
+
+CREATE TABLE employees(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
+    roles_id INT,
+    manager_id INT,
+    FOREIGN KEY (roles_id)
+    REFERENCES roles(id)
+    ON DELETE SET NULL
+);
+

@@ -14,14 +14,19 @@ const db = mysql.createConnection(
     host: 'localhost',
     user: 'root',
     password: process.env.MYSQL_RUN,
-    database: ''
+    database: 'employee_db'
   },
-  console.log(`Connected to the movie_db database.`)
+  console.log(`Connected to the employee_db database.`)
 );
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 // GIVEN a command-line application that accepts user input
 // WHEN I start the application
 // THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
+
 // WHEN I choose to view all departments
 // THEN I am presented with a formatted table showing department names and department ids
 // WHEN I choose to view all roles
@@ -39,29 +44,41 @@ const db = mysql.createConnection(
 
 const dashboardQuetions = () =>{ 
     return inquirer.prompt([
-        {
-            type: 'input',
-            name: 'projectName',
-            message: 'What is your project name?',
-        },
-    ]);
+      {
+        type: 'list',
+        name: 'initialQuestion',
+        message: 'Welcome to the employee database. What Can I help you with today?',
+        choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role']
+    },
+    ])
+.then((data) => {
+  console.log(data);
+  if (data == 'view all departments') {
+    db.query('SELECT * FROM departments', function (err, results) {
+      console.log(results);
+      return init();
+    });    
+      }
+})
+
 };
+
+
+// const viewDepartments = () => {
+  
+//   db.query('SELECT * FROM departments', function (err, results) {
+//     console.log(results);
+//   });
+
+//   return dashboardQuetions();
+
+// }
 
 
 
 
 function init() {
-    getManager()
-    // .then(getTeam)
-    // .then((data) => {
-    //     // console.log(data);
-    //     return fs.writeFileSync("./dist/index.html", generateHTML(data));
-    //   })
-    //   .catch((err) => {
-    //     if (err) {
-    //       throw err;
-    //     }
-    //   });
+    dashboardQuetions()
 }
 
 init();
