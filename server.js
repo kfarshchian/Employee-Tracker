@@ -9,6 +9,10 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+var term = require( 'terminal-kit' ).terminal ;
+
+const cTable = require('console.table');
+
 const db = mysql.createConnection(
   {
     host: 'localhost',
@@ -19,18 +23,15 @@ const db = mysql.createConnection(
   console.log(`Connected to the employee_db database.`)
 );
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
 
 // GIVEN a command-line application that accepts user input
 // WHEN I start the application
 // THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
-
 // WHEN I choose to view all departments
 // THEN I am presented with a formatted table showing department names and department ids
 // WHEN I choose to view all roles
 // THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
+
 // WHEN I choose to view all employees
 // THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
 // WHEN I choose to add a department
@@ -53,12 +54,34 @@ const dashboardQuetions = () =>{
     ])
 .then((data) => {
   console.log(data);
-  if (data == 'view all departments') {
-    db.query('SELECT * FROM departments', function (err, results) {
-      console.log(results);
+  
+  if (data.initialQuestion === 'view all departments') {
+    term.bold.underline.brightMagenta("All Departments.\n\n");
+    db.query('SELECT * FROM departments;', function (err, results) {
+      const allDepartments = [];
+      allDepartments.push(results)
+      console.table(results);
       return init();
     });    
       }
+  else if (data.initialQuestion === 'view all roles'){
+    term.bold.underline.brightMagenta("All Roles.\n\n");
+    db.query('SELECT * FROM roles;', function (err, results) {
+      const allRoles = [];
+      allRoles.push(results)
+      console.table(results);
+      return init();
+    });  
+  }
+  else if (data.initialQuestion === 'view all employees'){
+    term.bold.underline.brightMagenta("All Employees.\n\n");
+    db.query('SELECT * FROM employees;', function (err, results) {
+      const allEmployees = [];
+      allEmployees.push(results)
+      console.table(results);
+      return init();
+    });  
+  }
 })
 
 };
