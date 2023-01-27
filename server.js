@@ -43,7 +43,7 @@ const dashboardQuetions = () => {
       },
     ])
     .then((data) => {
-      console.log(data);
+    
 
       if (data.initialQuestion === "view all departments") {
         term.bold.underline.brightMagenta("All Departments.\n\n");
@@ -82,7 +82,7 @@ const dashboardQuetions = () => {
             },
           ])
           .then((data) => {
-            console.log(data);
+            
             const newDepartment = data.addDepartment;
             db.query(
               "INSERT INTO departments (department_name) VALUES (?);",
@@ -122,7 +122,7 @@ const dashboardQuetions = () => {
             },
           ])
           .then((data) => {
-            console.log(data);
+            
             const newRole = [
               data.addRole,
               parseInt(data.salary),
@@ -166,7 +166,7 @@ const dashboardQuetions = () => {
             },
           ])
           .then((data) => {
-            console.log(data);
+            
             const newEmployee = [data.firstName, data.lastName, data.role];
             db.query(
               "INSERT INTO employees (first_name, last_name, roles_id) VALUES (?, ?, ?);",
@@ -216,7 +216,7 @@ const dashboardQuetions = () => {
                 },
               ])
               .then((data) => {
-                console.log(data.roleSelection);
+                
                 db.query(
                   "Update roles SET title = ? where id = ?;",
                   [data.roleSelection, data.updateEmployee[0]],
