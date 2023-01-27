@@ -28,8 +28,9 @@
   - npm install --save mysql2
 
   ## Usage
-  ![alttext](./assets/images/{add name of picture here})
   
+  
+  ![alttext](./assets/images/site.png)
   I made this project to make it easier to run any MYSQL needs. This program will let you check all your databases in one place. It will also let you insert new data into the tables as well as updating existing data. This program runs on a node.js server that runs all commands live in the MYSQL databases and updated immediately. 
   
   ## Credits
