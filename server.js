@@ -82,12 +82,8 @@ const dashboardQuetions = () => {
             },
           ])
           .then((data) => {
-            
-            const newDepartment = data.addDepartment;
-            db.query(
-              "INSERT INTO departments (department_name) VALUES (?);",
-              newDepartment,
-              function (err, results) {
+            console.log(data);
+            db.query("INSERT INTO departments (department_name) VALUES (?);", data.name, function (err, results) {
                 term.bold.underline.brightMagenta(
                   "New department added, please see below.\n\n"
                 );
