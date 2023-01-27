@@ -37,7 +37,6 @@ const db = mysql.createConnection(
 // THEN I am prompted to enter the name of the department and that department is added to the database
 // WHEN I choose to add a role
 // THEN I am prompted to enter the name, salary, and department for the role and that role is added to the database
-
 // WHEN I choose to add an employee
 // THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
 
@@ -120,7 +119,7 @@ else if (data.initialQuestion === 'add a role'){
      {
       type: 'list',
       name: 'getDepartment',
-      message: 'What department is the new role under"Information Systems = 1" "Accounting = 2" "HR = 3")',
+      message: 'What department is the new role under "Information Systems = 1" "Accounting = 2" "HR = 3")',
       choices: [1, 2, 3]
     },
   ])
@@ -147,30 +146,46 @@ else if (data.initialQuestion === 'add an employee'){
      },
      {
       type: 'Type',
-      name: 'LastName',
+      name: 'lastName',
       message: 'What is the employees last name?',
      },
      {
-      type: 'Type',
+      type: 'list',
       name: 'role',
-      message: 'What is the employees role?',
+      message: 'What is the employees role_id "Information Systems = 1" "Accounting = 2" "HR = 3"?',
+      choices: [1, 2, 3]
      },
-     {
-      type: 'boolean',
-      name: 'getManager',
-      message: 'Is this employee a manager?',
-    },
   ])
   .then((data) =>{
     console.log(data);
-    const newRole = [data.addRole,parseInt(data.salary),data.getDepartment]
-    db.query('INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?);', newRole, function (err, results) {
-      term.bold.underline.brightMagenta("New department added, please see below.\n\n");
-      db.query('SELECT * FROM roles;', function (err, results) {
+    const newEmployee = [data.firstName,data.lastName,data.role]
+    db.query('INSERT INTO employees (first_name, last_name, roles_id) VALUES (?, ?, ?);', newEmployee, function (err, results) {
+      term.bold.underline.brightMagenta("New employee added, please see below.\n\n");
+      db.query('SELECT * FROM employees;', function (err, results) {
         const allEmployees = [];
         allEmployees.push(results)
         console.table(results);
         return init();})
+    });
+  }
+)
+}
+else if (data.initialQuestion === 'update an employee role'){
+  db.query('SELECT * FROM employees left JOIN roles ON roles.id = employees.id;', function (err, results) {
+    const allEmployees = [];
+    results.forEach((employee) => {allEmployees.push(`${employee.id } ${employee.first_name} ${employee.last_name}`);});
+    console.table(allEmployees);
+  return inquirer.prompt([
+     {
+      type: 'list',
+      name: 'updateEmployee',
+      message: 'What employee would you like to update?',
+      choices: allEmployees
+     },
+  ])
+  .then((data) =>{
+    console.log(data);
+
     });
   }
 )
